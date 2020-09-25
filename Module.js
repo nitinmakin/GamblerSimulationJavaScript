@@ -24,7 +24,7 @@ class GamblerSimulationMain {
                 var result = this.StopOfDay();
 
                 if (result == 50) {
-                    console.log("DAY " + day + " HE LOST $50")
+                    console.log("DAY " + day + " HE LOST $50");
                     totalLoss = totalLoss + 50;
                     luckyUnluckyDayAmount = luckyUnluckyDayAmount - 50;
                     array[day - 1] = luckyUnluckyDayAmount;
@@ -38,9 +38,11 @@ class GamblerSimulationMain {
                 day++;
             }
             if (totalProfit >= totalLoss) {
+                console.log();
                 console.log("OVERALL WON IN " + days + " DAYS IS $" + (totalProfit - totalLoss));
             }
             else {
+                console.log();
                 console.log("OVERALL LOST IN " + days + " DAYS IS $" + (totalLoss - totalProfit))
             }
             var max = array[0];
