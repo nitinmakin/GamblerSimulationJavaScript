@@ -14,51 +14,53 @@ class GamblerSimulationMain {
         return startingStack;
     }
     getDaysInfo(days) {
-        var array = new Array(days);
-        var luckyUnluckyDayAmount = 0;
-        var day = 1;
-        var totalProfit = 0;
-        var totalLoss = 0;
-        while (day <= days) {
-            var result = this.StopOfDay();
+        do {
+            var array = new Array(days);
+            var luckyUnluckyDayAmount = 0;
+            var day = 1;
+            var totalProfit = 0;
+            var totalLoss = 0;
+            while (day <= days) {
+                var result = this.StopOfDay();
 
-            if (result == 50) {
-                console.log("DAY " + day + " HE LOST $50")
-                totalLoss = totalLoss + 50;
-                luckyUnluckyDayAmount = luckyUnluckyDayAmount - 50;
-                array[day - 1] = luckyUnluckyDayAmount;
+                if (result == 50) {
+                    console.log("DAY " + day + " HE LOST $50")
+                    totalLoss = totalLoss + 50;
+                    luckyUnluckyDayAmount = luckyUnluckyDayAmount - 50;
+                    array[day - 1] = luckyUnluckyDayAmount;
+                }
+                else {
+                    console.log("DAY " + day + " HE WON $50");
+                    totalProfit = totalProfit + 50;
+                    luckyUnluckyDayAmount = luckyUnluckyDayAmount + 50;
+                    array[day - 1] = luckyUnluckyDayAmount;
+                }
+                day++;
+            }
+            if (totalProfit >= totalLoss) {
+                console.log("OVERALL WON IN " + days + " DAYS IS $" + (totalProfit - totalLoss));
             }
             else {
-                console.log("DAY " + day + " HE WON $50");
-                totalProfit = totalProfit + 50;
-                luckyUnluckyDayAmount = luckyUnluckyDayAmount + 50;
-                array[day - 1] = luckyUnluckyDayAmount;
+                console.log("OVERALL LOST IN " + days + " DAYS IS $" + (totalLoss - totalProfit))
             }
-
-            day++;
-        }
-        if (totalProfit >= totalLoss) {
-            console.log("OVERALL WON IN " + days + " DAYS IS $" + (totalProfit - totalLoss));
-        }
-        else {
-            console.log("OVERALL LOST IN " + days + " DAYS IS $" + (totalLoss - totalProfit))
-        }
-        var max = array[0];
-        var min = array[0];
-        var luckyDay = 0;
-        var unluckyDay = 0;
-        for (var i = 1; i < array.length; i++) {
-            if (array[i] > max) {
-                max = array[i];
-                luckyDay = i + 1;
+            var max = array[0];
+            var min = array[0];
+            var luckyDay = 0;
+            var unluckyDay = 0;
+            for (var i = 1; i < array.length; i++) {
+                if (array[i] > max) {
+                    max = array[i];
+                    luckyDay = i + 1;
+                }
+                if (min > array[i]) {
+                    min = array[i];
+                    unluckyDay = i + 1;
+                }
             }
-            if (min > array[i]) {
-                min = array[i];
-                unluckyDay = i + 1;
-            }
-        }
-        console.log("LUCKYEST DAY IS DAY " + luckyDay + " HE WAS IN $" + max);
-        console.log("UNLUCKYEST DAY IS DAY " + unluckyDay + " HE WAS IN $" + min);
+            console.log("LUCKYEST DAY IS DAY " + luckyDay + " HE WAS IN $" + max);
+            console.log("UNLUCKYEST DAY IS DAY " + unluckyDay + " HE WAS IN $" + min);
+            console.log("----------------------------------------------")
+        } while (totalProfit >= totalLoss);
     }
 }
 module.exports = new GamblerSimulationMain();
