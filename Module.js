@@ -1,68 +1,83 @@
+const StopOfDayLoss = 50;
+const StopOfDayProfit = 150;
+const TurnOverOfDay = 50;
+let Result;
+let LuckyDay = 0;
+let UnluckyDay = 0;
 class GamblerSimulationMain {
-    StopOfDay() {
-        var startingStack = 100;
-        var placedBet = 1;
-        while (startingStack != 50 && startingStack != 150) {
-            var random = Math.random() * 2;
-            if (random <= 1) {
-                startingStack--;
-            }
-            else {
-                startingStack++;
+
+    stopOfDay = () => {
+        var StartingStack = 100;
+        while (StartingStack != 50 && StartingStack != 150) {
+            var random = (Math.floor(Math.random() * 2)) + 1;
+            switch (random) {
+                case 1:
+                    StartingStack--;
+                    break;
+                case 2:
+                    StartingStack++;
+                    break;
             }
         }
-        return startingStack;
+        return StartingStack;
     }
-    getDaysInfo(days) {
-        do {
-            var array = new Array(days);
-            var luckyUnluckyDayAmount = 0;
-            var day = 1;
-            var totalProfit = 0;
-            var totalLoss = 0;
-            while (day <= days) {
-                var result = this.StopOfDay();
 
-                if (result == 50) {
-                    console.log("DAY " + day + " HE LOST $50");
-                    totalLoss = totalLoss + 50;
-                    luckyUnluckyDayAmount = luckyUnluckyDayAmount - 50;
-                    array[day - 1] = luckyUnluckyDayAmount;
+    getDaysInfo = (days) => {
+        do {
+            let LuckyUnluckyDayAmount = 0;
+            let Day = 1;
+            var array = new Array(days);
+            var TotalProfit = 0;
+            var TotalLoss = 0;
+            while (Day <= days) {
+                Result = this.stopOfDay();
+                switch (Result) {
+                    case StopOfDayLoss:
+                        console.log("DAY " + Day + " HE LOST $" + TurnOverOfDay);
+                        TotalLoss = TotalLoss + TurnOverOfDay;
+                        LuckyUnluckyDayAmount = LuckyUnluckyDayAmount - TurnOverOfDay;
+                        array[Day - 1] = LuckyUnluckyDayAmount;
+                        break;
+
+                    case StopOfDayProfit:
+                        console.log("DAY " + Day + " HE WON $" + TurnOverOfDay);
+                        TotalProfit = TotalProfit + TurnOverOfDay;
+                        LuckyUnluckyDayAmount = LuckyUnluckyDayAmount + TurnOverOfDay;
+                        array[Day - 1] = LuckyUnluckyDayAmount;
+                        break;
                 }
-                else {
-                    console.log("DAY " + day + " HE WON $50");
-                    totalProfit = totalProfit + 50;
-                    luckyUnluckyDayAmount = luckyUnluckyDayAmount + 50;
-                    array[day - 1] = luckyUnluckyDayAmount;
-                }
-                day++;
+                Day++;
             }
-            if (totalProfit >= totalLoss) {
+
+            if (TotalProfit >= TotalLoss) {
+                console.log("OVERALL WON IN " + days + " DAYS IS $" + (TotalProfit - TotalLoss));
                 console.log();
-                console.log("OVERALL WON IN " + days + " DAYS IS $" + (totalProfit - totalLoss));
             }
             else {
+                console.log("OVERALL LOST IN " + days + " DAYS IS $" + (TotalLoss - TotalProfit))
                 console.log();
-                console.log("OVERALL LOST IN " + days + " DAYS IS $" + (totalLoss - totalProfit))
             }
-            var max = array[0];
-            var min = array[0];
-            var luckyDay = 0;
-            var unluckyDay = 0;
-            for (var i = 1; i < array.length; i++) {
-                if (array[i] > max) {
-                    max = array[i];
-                    luckyDay = i + 1;
-                }
-                if (min > array[i]) {
-                    min = array[i];
-                    unluckyDay = i + 1;
-                }
+        } while (TotalProfit > TotalLoss)
+        return array;
+    }
+
+    getLuckyUnluckyDay(days) {
+        let array = this.getDaysInfo(days);
+        let max = array[0];
+        let min = array[0];
+        for (let i = 1; i < array.length; i++) {
+            if (array[i] > max) {
+                max = array[i];
+                LuckyDay = i + 1;
             }
-            console.log("LUCKYEST DAY IS DAY " + luckyDay + " HE WAS IN $" + max);
-            console.log("UNLUCKYEST DAY IS DAY " + unluckyDay + " HE WAS IN $" + min);
-            console.log("----------------------------------------------")
-        } while (totalProfit >= totalLoss);
+            if (min > array[i]) {
+                min = array[i];
+                UnluckyDay = i + 1;
+            }
+        }
+        console.log("LUCKYEST DAY IS DAY " + LuckyDay + " HE WAS IN $" + max);
+        console.log("UNLUCKYEST DAY IS DAY " + UnluckyDay + " HE WAS IN $" + min);
+      // console.log("----------------------------------------------")
     }
 }
 module.exports = new GamblerSimulationMain();
